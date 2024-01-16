@@ -40,7 +40,8 @@ spring:
   servlet:
     multipart:
       # 大小限制
-      max-file-size: 10MB
+      max-file-size: 1024MB
+      max-request-size: 1024MB
 server:
   address: 0.0.0.0
   port: 8101
@@ -99,3 +100,6 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.leezw.springbootinit.controller
+#文件上传根路径
+file:
+  path: D:/upload/

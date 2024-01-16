@@ -15,6 +15,9 @@ import java.io.File;
 import java.util.Arrays;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import com.leezw.springbootinit.utils.FileUtils;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,15 +41,30 @@ public class FileController {
     @Resource
     private CosManager cosManager;
 
+    @Resource
+    private FileUtils fileUtils;
+
     /**
-     * 文件上传
+     * 文件上传到本机服务器
+     *
+     * @param multipartFile
+     * @return
+     */
+    @PostMapping("/upload")
+    @ApiOperation(value = "文件上传", notes = "文件上传")
+    public BaseResponse<String> uploadFile(@RequestPart("file") MultipartFile multipartFile,HttpServletRequest request) {
+        return ResultUtils.success(fileUtils.uploadFile(multipartFile,request));
+    }
+
+    /**
+     * 文件上传 COS对象存储
      *
      * @param multipartFile
      * @param uploadFileRequest
      * @param request
      * @return
      */
-    @PostMapping("/upload")
+    @PostMapping("/uploadToCos")
     public BaseResponse<String> uploadFile(@RequestPart("file") MultipartFile multipartFile,
             UploadFileRequest uploadFileRequest, HttpServletRequest request) {
         String biz = uploadFileRequest.getBiz();
